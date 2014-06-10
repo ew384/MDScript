@@ -8,10 +8,11 @@ import matplotlib.pyplot as plt
 # Endian: wangn.0919@gmail.com                                  #
 #                                                               #
 # This file can create a polymer of diamond-like structure with #
-# periodic boundary. This polymer will have N^3 units of cell,  #
-# each chain will have M number of CH2 United Atoms.            #
+# periodic boundary. This polymer will have Nx, Ny, Nz units of #
+# cell along the x, y and z coordinates. Each chain has M       #
+# number of CH2 United Atoms.                                   #
 #                                                               #
-# Excuting file with input parameter: ./polymer.py N M          #
+# Excuting this file: ./Diamond_Plymer.py Nx Ny Nz  M           #
 #################################################################
 
 Cell=[
@@ -36,7 +37,7 @@ def Ini(chains):
         else:
                 return ((CC/2*3**0.5*(chains+1))**2+(CC/2)**2)**0.5/1.5**0.5
 
-def Network(Cell,N):
+def Network(Cell,Nx, Ny, Nz):
         global Q
         Q, x, xy, xyz = [], [], [], []
         for i in Cell:
@@ -263,11 +264,13 @@ def PrintData(Coordination, Bond):
 
 if __name__ == "__main__":
         Cell=np.array(Cell)
-        N=int(sys.argv[1])
-        chains=int(sys.argv[2])
+        Nx=int(sys.argv[1])
+        Ny=int(sys.argv[2])
+        Nz=int(sys.argv[3])
+        chains=int(sys.argv[4])
         Scaling=Ini(chains)
         Cell=Scaling*Cell
-        Network(Cell,N)
+        Network(Cell,Nx,Ny,Nz)
         Connection(Q)
         Periodize(Q)
         bond, core, reverse = ConnectBeads(Q,chains)
