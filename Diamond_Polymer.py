@@ -37,7 +37,7 @@ def Ini(chains):
         else:
                 return ((CC/2*3**0.5*(chains+1))**2+(CC/2)**2)**0.5/1.5**0.5
 
-def Network(Cell,Nx, Ny, Nz):
+def Network(Cell, Nx, Ny, Nz):
         global Q
         Q, x, xy, xyz = [], [], [], []
         for i in Cell:
