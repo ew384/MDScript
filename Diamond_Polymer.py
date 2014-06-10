@@ -5,6 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
 #################################################################
+# Endian: wangn.0919@gmail.com                                  #
 #                                                               #
 # This file can create a polymer of diamond-like structure with #
 # periodic boundary. This polymer will have N^3 units of cell,  #
