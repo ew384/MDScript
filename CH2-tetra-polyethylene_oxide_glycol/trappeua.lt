@@ -1,0 +1,61 @@
+# Potential Energy between "atoms" are taken from the TraPPE force-field.
+#angle E=62500K=125kcal/mol harmonic style in Lammps has E unit(real) of kcal/mol/rad^2, 
+#thus E=125kcal/mol/(114*pi/180)^2=31.575 
+##O2 is the double bond Oxygen attached to Carbon: O=C
+##C2 is the double bond Carbon attached to Oxygen: O=C
+TraPPE {
+	write_once("In Init") {
+		units           real
+		atom_style      full
+		bond_style      hybrid harmonic
+		angle_style     hybrid harmonic
+		dihedral_style  hybrid trappe opls 
+		improper_style  none
+		pair_style      lj/cut/coul/long 9.0 9.0
+		kspace_style	ewald/disp 0.00001
+		pair_modify	tail yes
+	}
+	write_once("Data Masses") {
+		@atom:C   12.01
+		@atom:O   16.0
+		@atom:CH2 14.1707	
+	}
+	write_once("In Settings") {
+		
+		pair_coeff	@atom:C @atom:C 0.001	6.4
+		pair_coeff 	@atom:O @atom:O 0.110	2.80
+		pair_coeff 	@atom:CH2 @atom:CH2 0.092	3.95
+		pair_coeff	@atom:C @atom:O 0.0105	4.6
+		pair_coeff	@atom:C @atom:CH2 0.0096	5.175
+		pair_coeff	@atom:O @atom:CH2 0.1006	3.375
+		
+
+		bond_coeff	@bond:CH2CH2		harmonic	120.0   1.54
+		bond_coeff	@bond:CCH2		harmonic	120.0   1.54
+		bond_coeff	@bond:OCH2		harmonic	120.0   1.41
+
+		angle_coeff	@angle:CH2OCH2    	harmonic	120.03	112
+		angle_coeff	@angle:CH2CCH2    	harmonic	120.03	112
+		angle_coeff	@angle:CH2CH2O    	harmonic	99.96	112
+		angle_coeff	@angle:OCH2C	    	harmonic	99.96	112
+
+		dihedral_coeff	@dihedral:OCH2CH2O	trappe	-7.75967 7.58526 6.70523 8.40071 0.63221 0.11063 0.35962 0.01683		
+		dihedral_coeff	@dihedral:CH2OCH2CH2	trappe  -0.2539  -5.15997 -0.69711 5.35013 0.80312 0.28307 0.09526 -0.05797		
+		dihedral_coeff	@dihedral:OCH2CCH2	opls 2.93698 -0.212 3.06 0.0
+		dihedral_coeff	@dihedral:CCH2OCH2	opls 2.8828 -0.6508 2.2185 0.0
+	}
+
+	write_once("Data Angles By Type") {
+		@angle:CH2OCH2  	@atom:CH2	@atom:O		@atom:CH2	@bond:OCH2	@bond:OCH2
+		@angle:CH2CH2O  	@atom:CH2	@atom:CH2	@atom:O		@bond:CH2CH2	@bond:OCH2
+		@angle:CH2CCH2   	@atom:CH2	@atom:C		@atom:CH2	@bond:CCH2	@bond:CCH2
+		@angle:OCH2C		@atom:O		@atom:CH2	@atom:C		@bond:OCH2	@bond:CCH2
+	}
+
+	write_once("Data Dihedrals By Type") {
+		@dihedral:OCH2CH2O	@atom:O		@atom:CH2	@atom:CH2  	@atom:O		@bond:OCH2	@bond:CH2CH2 	@bond:OCH2
+		@dihedral:CH2OCH2CH2	@atom:CH2	@atom:O		@atom:CH2  	@atom:CH2	@bond:OCH2	@bond:OCH2 	@bond:CH2CH2
+		@dihedral:OCH2CCH2	@atom:O		@atom:CH2	@atom:C  	@atom:CH2	@bond:OCH2	@bond:CCH2 	@bond:CCH2
+		@dihedral:CCH2OCH2	@atom:C		@atom:CH2	@atom:O  	@atom:CH2	@bond:CCH2	@bond:OCH2 	@bond:OCH2
+	}
+}

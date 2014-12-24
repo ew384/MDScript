@@ -1,0 +1,6 @@
+Please use moltemplate(http://www.moltemplate.org) to compile the force filed file "trappe_modifed.lt with the coordinates file that was generated from "peo-chains.py".
+
+This peo-chains.py will produce polyethylene oxide glycol chain:
+CH3-O-(CH2CH2O)5-CH3 
+
+The peo-chains.py takes one input parameter N, where N is the number of of chains in the simulation box. It will produce a coordination file PEO.lt, which will be used for moltemplate to compile and produce the LAMMPS data file. 

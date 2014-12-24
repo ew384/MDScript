@@ -1,0 +1,55 @@
+#angle E=62500K=125kcal/mol harmonic style in Lammps has E unit(real) of kcal/mol/rad^2, 
+#thus E=125kcal/mol/(114*pi/180)^2=31.575 
+#"pair_style hybrid/overlay lj/cut 9.0 coul/long 9.0"
+# is similar to "pair_style      lj/cut/coul/long 9.0 9.0"
+#kspace_style	ewald/disp 0.0001 
+TraPPE {
+	write_once("In Init") {
+		units           real
+		atom_style      full
+		bond_style      hybrid harmonic
+		angle_style     hybrid harmonic
+		dihedral_style  trappe 
+		improper_style  none
+		pair_style	lj/cut/coul/long 9.0 9.0
+		kspace_style	ewald/disp 0.0001
+		pair_modify     tail yes 
+	}
+	write_once("Data Masses") {
+		@atom:O   16.0	
+		@atom:CH2 14.1707	
+		@atom:CH3 15.2507	
+	}
+	write_once("In Settings") {
+		pair_coeff 	@atom:CH2 @atom:CH2 0.092 3.95
+		pair_coeff 	@atom:CH2 @atom:CH3 0.133 3.85
+		pair_coeff 	@atom:CH3 @atom:CH3 0.1947 3.75
+		pair_coeff 	@atom:O	@atom:O 0.110 2.80
+		pair_coeff 	@atom:O	@atom:CH2 0.09995 3.375
+		pair_coeff 	@atom:O	@atom:CH3 0.14579 3.275
+
+		bond_coeff	@bond:CH2CH2	harmonic	836.80000   1.54
+		bond_coeff	@bond:OCH2	harmonic	836.80000   1.41
+		bond_coeff	@bond:OCH3	harmonic	836.80000   1.41
+
+		angle_coeff	@angle:CH2OCH2    	harmonic	120.03	112
+		angle_coeff	@angle:CH3OCH2    	harmonic	120.03	112
+		angle_coeff	@angle:CH2CH2O    	harmonic	99.96	112
+
+		dihedral_coeff	@dihedral:OCH2CH2O	-7.75967 7.58526 6.70523 8.40071 0.63221 0.11063 0.35962 0.01683		
+		dihedral_coeff	@dihedral:CH2OCH2CH2	-0.2539  -5.15997 -0.69711 5.35013 0.80312 0.28307 0.09526 -0.05797		
+		dihedral_coeff	@dihedral:CH3OCH2CH2	-0.2539  -5.15997 -0.69711 5.35013 0.80312 0.28307 0.09526 -0.05797		
+	}
+
+	write_once("Data Angles By Type") {
+		@angle:CH2OCH2 @atom:CH2	@atom:O		@atom:CH2	@bond:OCH2	@bond:OCH2
+		@angle:CH2CH2O @atom:CH2	@atom:CH2	@atom:O		@bond:CH2CH2	@bond:OCH2
+		@angle:CH3OCH2 @atom:CH3	@atom:O		@atom:CH2	@bond:OCH3	@bond:OCH2
+	}
+
+	write_once("Data Dihedrals By Type") {
+		@dihedral:OCH2CH2O	@atom:O		@atom:CH2	@atom:CH2  	@atom:O		@bond:OCH2	@bond:CH2CH2 	@bond:OCH2
+		@dihedral:CH2OCH2CH2	@atom:CH2	@atom:O		@atom:CH2  	@atom:CH2	@bond:OCH2	@bond:OCH2 	@bond:CH2CH2
+		@dihedral:CH3OCH2CH2	@atom:CH3	@atom:O		@atom:CH2  	@atom:CH2	@bond:OCH3	@bond:OCH2 	@bond:CH2CH2
+	}
+}
